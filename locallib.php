@@ -64,10 +64,7 @@ class assign_submission_estream extends assign_submission_plugin
 			}
 		  else
 			{
-			return "<iframe height="198" width="352" src="".$url." / Embed . aspx ? id = ".$cdid." & amp;
-			code = ".$embedcode." & amp;
-			wmode = opaque & amp;
-			viewonestream = 0" frameborder="0"></iframe>";
+			return "<iframe height=\"198\" width=\"352\" src=\"".$url."/Embed.aspx?id=".$cdid."&amp;code=".$embedcode."&amp;wmode=opaque&amp;viewonestream=0\" frameborder=\"0\"></iframe>";
 			}
 		}
 
@@ -258,15 +255,11 @@ class assign_submission_estream extends assign_submission_plugin
 		$html.= '<div style="padding-left: 15px; padding-top: 8px; width: 95%; height: 90%; line-height: 160%;">';
 		$html.= get_string('upload_help', 'assignsubmission_estream') . '<br />';
 		$html.= '<div id="div_Loading" style="display: table-cell; width: 500px; height: 110px; padding-top: 16px; text-align: center;">Loading..</br><img src="/mod/assign/submission/estream/pix/loading.gif" alt="loading.." /></div>';
-		$html.= '<iframe src="' . $url . '" width="100%" height="140" noresize frameborder="0" onload="document.getElementById('div_Loading').style.display='none';"></iframe>';
+		$html.= '<iframe src="'.$url.'" width="100%" height="140" noresize frameborder="0" onload="document.getElementById(\'div_Loading\').style.display=\'none\';"></iframe>';
 		$html.= '</div>';
 		$html.= '<div style="font-size: smaller; margin-top: 3px; text-align: right;">Powered by <img src="/mod/assign/submission/estream/pix/icon.png" alt="Planet eStream" /> Planet eStream</div></div>';
-		$mform->addElement('hidden', 'cdid', '', array(
-			'id' => 'hdn_cdid'
-		));
-		$mform->addElement('hidden', 'embedcode', '', array(
-			'id' => 'hdn_embedcode'
-		));
+		$mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
+		$mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode'));
 		$mform->addElement('static', 'div_estream', '', $html);
 		$mform->setType('cdid', PARAM_TEXT);
 		$mform->setType('embedcode', PARAM_TEXT);

@@ -16,15 +16,10 @@ class backup_assignsubmission_estream_subplugin extends backup_subplugin
 		{
 		$subplugin = $this->get_subplugin_element();
 		$subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-		$subpluginelement = new backup_nested_element('submission_estream', null, array(
-			'widgettype',
-			'submission'
-		));
+		$subpluginelement = new backup_nested_element('submission_estream', null, array('widgettype','submission'));
 		$subplugin->add_child($subpluginwrapper);
 		$subpluginwrapper->add_child($subpluginelement);
-		$subpluginelement->set_source_table('assignsubmission_estream', array(
-			'submission' => backup::VAR_PARENTID
-		));
+		$subpluginelement->set_source_table('assignsubmission_estream', array('submission' => backup::VAR_PARENTID));
 		$subpluginelement->annotate_files('assignsubmission_estream', 'submissions_estream', 'submission');
 		return $subplugin;
 		}

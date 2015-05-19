@@ -38,10 +38,8 @@ if (empty($itemtitle))
 				<script type="text/javascript">
 					function page_load()
 					{
-						parent.parent.document.getElementById('hdn_cdid').value = "<?php
-		echo $cdid; ?>";
-						parent.parent.document.getElementById('hdn_embedcode').value = "<?php
-		echo $embedcode; ?>";
+						parent.parent.document.getElementById('hdn_cdid').value = "<?php echo $cdid; ?>";
+						parent.parent.document.getElementById('hdn_embedcode').value = "<?php echo $embedcode; ?>";
 
 						// parent.parent.document.getElementById('id_cancel').disabled=true;
 						// parent.parent.document.forms[0].submit();
@@ -57,8 +55,7 @@ if (empty($itemtitle))
 				</style>
 			</head>
 			<body onload="page_load()" >
-				<h3><?php
-		echo get_string('uploadok', 'assignsubmission_estream'); ?></h3>
+				<h3><?php echo get_string('uploadok', 'assignsubmission_estream'); ?></h3>
 			</body>
 		</html>
 <?php
@@ -118,8 +115,7 @@ if (empty($itemtitle))
 				</style>
 			</head>
 			<body>
-				<h3><?php
-		echo get_string('notyetconfigured', 'assignsubmission_estream') ?></h3>
+				<h3><?php echo get_string('notyetconfigured', 'assignsubmission_estream') ?></h3>
 			</body>
 		</html>
 <?php
@@ -133,9 +129,7 @@ if (empty($itemtitle))
 
 	</script>
 	<div style="text-align: center;">
-		<iframe width="100%" height="120" frameborder="0" src="<?php
-		echo $baseurl; ?>/UploadSubmissionVLE.aspx?murl=<?php
-		echo $CFG->wwwroot . '/mod/assign/submission/estream/upload.php' . '&amp;title=' . urlencode($itemtitle) . '&amp;desc=' . urlencode($itemdesc) . '&amp;cid=' . urlencode($itemcid) . '&amp;aid=' . urlencode($itemaid) . '&amp;uid=' . urlencode($itemuid) . '&amp;cdid=' . urlencode($itemcdid); ?>"></iframe>
+		<iframe width="100%" height="120" frameborder="0" src="<?php echo $baseurl;?>/UploadSubmissionVLE.aspx?murl=<?php echo $CFG->wwwroot.'/mod/assign/submission/estream/upload.php'.'&amp;title='.urlencode($itemtitle).'&amp;desc='.urlencode($itemdesc).'&amp;cid='.urlencode($itemcid).'&amp;aid='.urlencode($itemaid).'&amp;uid='.urlencode($itemuid).'&amp;cdid='.urlencode($itemcdid);?>"></iframe>
 	</div>
 <?php
 		}
