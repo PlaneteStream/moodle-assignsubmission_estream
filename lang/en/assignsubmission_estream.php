@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * Strings for the Planet eStream Assignment Submission Plugin, language 'en'
  *
@@ -22,6 +36,3 @@ $string['upload'] = 'Upload a Video or Audio file';
 $string['upload_help'] = 'Click the Browse button, select a video or audio file to upload, then click Upload.<br />Once uploaded, the file will be available after having been processed by the system.  Please note that larger uploads require more processing time and may take some time to display on the system.<br />';
 $string['uploadok'] = 'Uploaded OK<br /><br />Please click &apos;Save changes&apos; to save.';
 $string['uploadfailed'] = 'Upload Failed<br /><br />Please refresh the page and try again';
-
-
- 
