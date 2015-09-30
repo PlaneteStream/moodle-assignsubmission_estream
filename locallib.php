@@ -162,6 +162,7 @@ class assign_submission_estream extends assign_submission_plugin
             }
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
             curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             $content = curl_exec($curl);
         } catch (Exception $e) {
             // Non-fatal exception!
