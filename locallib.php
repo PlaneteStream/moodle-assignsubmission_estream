@@ -162,6 +162,7 @@ class assign_submission_estream extends assign_submission_plugin
             }
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
             curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             $content = curl_exec($curl);
         } catch (Exception $e) {
             // Non-fatal exception!
@@ -187,7 +188,6 @@ class assign_submission_estream extends assign_submission_plugin
      */
     public function get_form_elements($submission, MoodleQuickForm $mform, stdClass $data) {
         global $CFG, $USER, $PAGE, $COURSE;
-        $elements = array();
         $cdid = 0;
         $embedcode = "";
         $url = $CFG->httpswwwroot . '/mod/assign/submission/estream/upload.php';
@@ -222,12 +222,11 @@ class assign_submission_estream extends assign_submission_plugin
         $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 95%; height: 90%; line-height: 160%;">';
         $html .= get_string('upload_help', 'assignsubmission_estream') . '<br />';
         $html .= '<div id="div_Loading" style="display: table-cell; width: 500px; height: 110px; padding-top: 16px; text'
-        . '-align: center;">Loading..</br><img src="submission/estream/pix/loading.gif" alt="loading.." /></div>';
-        $html .= '<iframe src="'.$url.'" width="100%" height="140" noresize frameborder="0" onload="document.getElementB'
-        . 'yId(\'div_Loading\').style.display=\'none\';"></iframe>';
-        $html .= '</div>';
+        . '-align: center;">Loading..</br><img src="' . $CFG->wwwroot . '/mod/assign/submission/estream/pix/loading.gif" '
+        . 'alt="loading.." /></div><iframe src="'.$url.'" width="100%" height="140" noresize frameborder="0" onload="'
+        . 'document.getElementById(\'div_Loading\').style.display=\'none\';"></iframe></div>';
         $html .= '<div style="font-size: smaller; margin-top: 3px; text-align: right;">Powered by <img src="'
-        . 'submission/estream/pix/icon.png" alt="Planet eStream" /> Planet eStream</div></div>';
+        . $CFG->wwwroot . '/mod/assign/submission/estream/pix/icon.png" alt="Planet eStream" />Planet eStream</div></div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
         $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode'));
         $mform->addElement('static', 'div_estream', '', $html);

@@ -37,7 +37,7 @@ class restore_assignsubmission_estream_subplugin extends restore_subplugin
             $data->assignment = $this->get_new_parentid('assign');
             $oldsubmissionid = $data->submission;
             $data->submission = $this->get_mappingid('submission', $data->submission);
-            $DB->insert_record('submissions_estream', $data);
-            $this->add_related_files('submissions_estream', 'submissions_estream', 'submission', null, $oldsubmissionid);
+            $DB->insert_record('assignsubmission_estream', $data);
+            $this->add_related_files('assignsubmission_estream', 'submissions_estream', 'submission', null, $oldsubmissionid);
     }
 }
