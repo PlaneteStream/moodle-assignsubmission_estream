@@ -28,7 +28,7 @@ class backup_assignsubmission_estream_subplugin extends backup_subplugin
     protected function define_submission_subplugin_structure() {
             $subplugin = $this->get_subplugin_element();
             $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-            $subpluginelement = new backup_nested_element('submission_estream', null, array('widgettype', 'submission'));
+            $subpluginelement = new backup_nested_element('submission_estream', null, array('cdid', 'embedcode', 'submission'));
             $subplugin->add_child($subpluginwrapper);
             $subpluginwrapper->add_child($subpluginelement);
             $subpluginelement->set_source_table('assignsubmission_estream', array('submission' => backup::VAR_PARENTID));
