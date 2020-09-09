@@ -66,8 +66,31 @@ class assign_submission_estream extends assign_submission_plugin
         if ($cdid == "0") {
             return "";
         } else {
-            return "<iframe allowfullscreen height=\"198\" width=\"352\" src=\"".$url."/Embed.aspx?id=".$cdid
+			
+			   if(strpos($cdid, '¬') !== false){ // Multiple uploads
+			   
+	$CDIDs = explode("¬", $cdid);
+				 $Codes = explode("¬", $embedcode);	
+				 $strReturn = '';
+
+				  for($i = 0;$i<count($CDIDs);$i++){
+
+			 $strReturn .="<iframe allowfullscreen height=\"198\" width=\"352\" src=\"".$url."/Embed.aspx?id=".$CDIDs[$i]
+            ."&amp;code=".$Codes[$i]."&amp;wmode=opaque&amp;viewonestream=0\" frameborder=\"0\"></iframe>&nbsp;";
+					 
+				}
+				
+				return $strReturn;
+				
+				      return "<iframe allowfullscreen height=\"198\" width=\"352\" src=\"".$url."/Embed.aspx?id=123&amp;code=123&amp;wmode=opaque&amp;viewonestream=0\" frameborder=\"0\"></iframe>";
+ 
+			   } else {
+				   
+				        return "<iframe allowfullscreen height=\"198\" width=\"352\" src=\"".$url."/Embed.aspx?id=".$cdid
             ."&amp;code=".$embedcode."&amp;wmode=opaque&amp;viewonestream=0\" frameborder=\"0\"></iframe>";
+				   
+			   }
+			       
         }
     }
     /**
@@ -78,9 +101,27 @@ class assign_submission_estream extends assign_submission_plugin
      * @return bool
      */
     public function save(stdClass $submission, stdClass $data) {
-	    try {
-            if ($data->cdid > 0) {
-	        global $DB;
+	    try {			
+           // if ($data->cdid > 0) {
+			  if(empty($data->cdid)) {
+	         global $DB; // beng
+                $thissubmission = $this->funcgetsubmission($submission->id);
+                if ($thissubmission) {
+                    $thissubmission->submission = $submission->id;
+                    $thissubmission->assignment = $this->assignment->get_instance()->id;
+                    $thissubmission->embedcode = "";
+                    $thissubmission->cdid = "";
+                    return $DB->update_record('assignsubmission_estream', $thissubmission);
+                } else {
+                    $thissubmission = new stdClass();
+                    $thissubmission->submission = $submission->id;
+                    $thissubmission->assignment = $this->assignment->get_instance()->id;
+                    $thissubmission->embedcode = "";
+                    $thissubmission->cdid = "";
+                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
+                }	
+            } else {
+				 global $DB;
                 $thissubmission = $this->funcgetsubmission($submission->id);
                 if ($thissubmission) {
                     $thissubmission->submission = $submission->id;
@@ -96,27 +137,12 @@ class assign_submission_estream extends assign_submission_plugin
                     $thissubmission->cdid = $data->cdid;
                     return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
                 }
-            } else {
-		    global $DB; // beng
-                $thissubmission = $this->funcgetsubmission($submission->id);
-                if ($thissubmission) {
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = "";
-                    $thissubmission->cdid = "";
-                    return $DB->update_record('assignsubmission_estream', $thissubmission);
-                } else {
-                    $thissubmission = new stdClass();
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = "";
-                    $thissubmission->cdid = "";
-                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
-                }		
+		  	
 				
 			}
 			
         } catch (Exception $e) {
+			
             // Non-fatal exception!
         }
     }
@@ -168,19 +194,108 @@ class assign_submission_estream extends assign_submission_plugin
      *
      * @return bool
      */
+	 
+	 function atto_planetestream_obfuscate($strx) {
+    $strbase64chars = '0123456789aAbBcCDdEeFfgGHhiIJjKklLmMNnoOpPQqRrsSTtuUvVwWXxyYZz/+=';
+    $strbase64string = base64_encode($strx);
+    if ($strbase64string == '') {
+        return '';
+    }
+    $strobfuscated = '';
+    for ($i = 0; $i < strlen ($strbase64string); $i ++) {
+        $intpos = strpos($strbase64chars, substr($strbase64string, $i, 1));
+        if ($intpos == - 1) {
+            return '';
+        }
+        $intpos += strlen($strbase64string ) + $i;
+        $intpos = $intpos % strlen($strbase64chars);
+        $strobfuscated .= substr($strbase64chars, $intpos, 1);
+    }
+    return urlencode($strobfuscated);
+}
+	 
+	 
+	 function atto_planetestream_getchecksum() {
+    $decchecksum = (float)(date('d') + date('m')) + (date('m') * date('d')) + (date('Y') * date('d'));
+    $decchecksum += $decchecksum * (date('d') * 2.27409) * .689274;
+    return md5(floor($decchecksum));
+}
+
+
+function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$params) {
+    $return = '';
+	
+	//$return = $url . "~~~" . $checksum . "~~~~" . $delta . "~~~~" . $userip;
+    try {
+        $url .= '/VLE/Moodle/Auth/?source=1&checksum=' . $checksum . '&delta=' . $delta . '&u=' . $userip;
+        if (!$curl = curl_init($url)) {
+           return '';
+		   //return $return;
+        }
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 4);
+        curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($curl);
+        if (strpos($response, '{"ticket":') === 0) {
+            $jobj = json_decode($response);
+            $return = $jobj->ticket;
+            $params['estream_height'] = $jobj->height;
+            $params['estream_width'] = $jobj->width;
+        }
+    } catch (Exception $e) {
+        // ... non-fatal ...
+    }
+    return $return;
+}
+
+	 
     public function delete_instance() {
         global $DB;
+		global $PAGE, $USER;
+		profile_load_data($USER);
+		
+		$params = array();
+    $params['usercontextid'] = $usercontextid;
+if (isset($USER->profile_field_planetestreamusername) && !empty($USER->profile_field_planetestreamusername)) {
+    $delta = atto_planetestream_obfuscate($USER->profile_field_planetestreamusername);
+	} else {
+	$delta = atto_planetestream_obfuscate($USER->username);
+	}
+	$userip = atto_planetestream_obfuscate(getremoteaddr());
+	$url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
+	$params['estream_url'] = $url;
+	$checksum = atto_planetestream_getchecksum();
+	$authticket = atto_planetestream_getauthticket($url, $checksum, $delta, $userip, $params);
+	if ($authticket == '') {
+       $params['disabled'] = true; //may not need
+    }
+		
         $DB->delete_records('assignsubmission_estream', array(
                 'assignment' => $this->assignment->get_instance()->id
         ));
+		
+
         try {
             $cs = ( float )(date('d') + date('m')) + (date('m') * date('d')) + (date('Y') * date('d'));
             $cs += $cs * (date('d') * 2.27409) * .689274;
-            $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
+          //  $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
             if (empty($url)) {
                 $url = rtrim(get_config('planetestream', 'url') , '/');
             }
-            $url = $url . "/UploadSubmissionVLE.aspx?mad=" . $this->assignment->get_instance()->id . "&checksum=" . md5(floor($cs));
+			
+            $url = $url . "/VLE/Moodle/Default.aspx?sourceid=11&inlinemode=moodle";
+			$url = $url . "&mad=" . $this->assignment->get_instance()->id; 
+			$url = $url . "&delta=" . $delta; 
+			$url = $url . "&assign=" . ((string)$PAGE->pagetype == 'mod-assign-editsubmission' ? "true" : "false");
+			$url = $url . "&ticket=" . $authticket; 
+			//$url = $url . "&checksum=" . md5(floor($cs));
+			$url = $url . "&checksum=" . $checksum;
+			
+			
             if (!$curl = curl_init($url)) {
                 $this->log('curl init failed [187].');
                 return false;
@@ -215,7 +330,7 @@ class assign_submission_estream extends assign_submission_plugin
      */
     public function get_form_elements($submission, MoodleQuickForm $mform, stdClass $data) {
         global $CFG, $USER, $PAGE, $COURSE;
-        $cdid = 0;
+        $cdid = "";
         $embedcode = "";
         $url = $CFG->httpswwwroot . '/mod/assign/submission/estream/upload.php';
         $itemtitle = "Submission by " . fullname($USER);
@@ -244,19 +359,10 @@ class assign_submission_estream extends assign_submission_plugin
         $html .= 'document.getElementById("hdn_cdid").value="' . $cdid . '";';
         $html .= 'document.getElementById("hdn_embedcode").value="' . $embedcode . '";';
         $html .= '</script>';
-        $html .= '<div class="block" style="width: 60%; height: 300px;"><div class="header"><div class="title"><h2>'
-        . get_string('upload', 'assignsubmission_estream') . '</h2></div></div>';
-        $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 95%; height: 90%; line-height: 160%;">';
-        $html .= get_string('upload_help', 'assignsubmission_estream') . '<br />';
-        $html .= '<div id="div_Loading" style="display: table-cell; width: 500px; height: 110px; padding-top: 16px; text'
-        . '-align: center;">Loading..</br><img src="' . $CFG->wwwroot . '/mod/assign/submission/estream/pix/loading.gif" '
-        . 'alt="loading.." /></div><iframe src="'.$url.'" width="100%" height="140" noresize frameborder="0" onload="'
-        . 'document.getElementById(\'div_Loading\').style.display=\'none\';"></iframe></div>';
-        $html .= '<div style="font-size: smaller; margin-top: 3px; text-align: right;">Powered by <img src="'
-        . $CFG->wwwroot . '/mod/assign/submission/estream/pix/icon.png" alt="Planet eStream" />Planet eStream</div></div>';
+        $html .= '<iframe src="'.$url.'" width="100%" height="720" noresize frameborder="0"></iframe></div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
-        $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode'));
-        $mform->addElement('static', 'div_estream', '', $html);
+        $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode')); 
+	  $mform->addElement('html', $html);
         $mform->setType('cdid', PARAM_TEXT);
         $mform->setType('embedcode', PARAM_TEXT);
         return true;
