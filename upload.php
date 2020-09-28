@@ -66,7 +66,7 @@ function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$pa
 	
 	//$return = $url . "~~~" . $checksum . "~~~~" . $delta . "~~~~" . $userip;
     try {
-        $url .= '/VLE/Moodle/Auth/?source=1&checksum=' . $checksum . '&delta=' . $delta . '&u=' . $userip;
+        $url .= '/VLE/Moodle/Auth/?source=1&assign=1&checksum=' . $checksum . '&delta=' . $delta . '&u=' . $userip;
         if (!$curl = curl_init($url)) {
            return '';
 		   //return $return;

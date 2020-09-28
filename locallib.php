@@ -195,7 +195,7 @@ class assign_submission_estream extends assign_submission_plugin
      * @return bool
      */
 	 
-	 function atto_planetestream_obfuscate($strx) {
+	public function atto_planetestream_obfuscate($strx) {
     $strbase64chars = '0123456789aAbBcCDdEeFfgGHhiIJjKklLmMNnoOpPQqRrsSTtuUvVwWXxyYZz/+=';
     $strbase64string = base64_encode($strx);
     if ($strbase64string == '') {
@@ -227,7 +227,7 @@ function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$pa
 	
 	//$return = $url . "~~~" . $checksum . "~~~~" . $delta . "~~~~" . $userip;
     try {
-        $url .= '/VLE/Moodle/Auth/?source=1&checksum=' . $checksum . '&delta=' . $delta . '&u=' . $userip;
+        $url .= '/VLE/Moodle/Auth/?source=1&assign=1&checksum=' . $checksum . '&delta=' . $delta . '&u=' . $userip;
         if (!$curl = curl_init($url)) {
            return '';
 		   //return $return;
@@ -253,49 +253,19 @@ function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$pa
 }
 
 	 
-    public function delete_instance() {
+   public function delete_instance() {
         global $DB;
-		global $PAGE, $USER;
-		profile_load_data($USER);
-		
-		$params = array();
-    $params['usercontextid'] = $usercontextid;
-if (isset($USER->profile_field_planetestreamusername) && !empty($USER->profile_field_planetestreamusername)) {
-    $delta = atto_planetestream_obfuscate($USER->profile_field_planetestreamusername);
-	} else {
-	$delta = atto_planetestream_obfuscate($USER->username);
-	}
-	$userip = atto_planetestream_obfuscate(getremoteaddr());
-	$url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
-	$params['estream_url'] = $url;
-	$checksum = atto_planetestream_getchecksum();
-	$authticket = atto_planetestream_getauthticket($url, $checksum, $delta, $userip, $params);
-	if ($authticket == '') {
-       $params['disabled'] = true; //may not need
-    }
-		
         $DB->delete_records('assignsubmission_estream', array(
                 'assignment' => $this->assignment->get_instance()->id
         ));
-		
-
         try {
             $cs = ( float )(date('d') + date('m')) + (date('m') * date('d')) + (date('Y') * date('d'));
             $cs += $cs * (date('d') * 2.27409) * .689274;
-          //  $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
+            $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
             if (empty($url)) {
                 $url = rtrim(get_config('planetestream', 'url') , '/');
             }
-			
-            $url = $url . "/VLE/Moodle/Default.aspx?sourceid=11&inlinemode=moodle";
-			$url = $url . "&mad=" . $this->assignment->get_instance()->id; 
-			$url = $url . "&delta=" . $delta; 
-			$url = $url . "&assign=" . ((string)$PAGE->pagetype == 'mod-assign-editsubmission' ? "true" : "false");
-			$url = $url . "&ticket=" . $authticket; 
-			//$url = $url . "&checksum=" . md5(floor($cs));
-			$url = $url . "&checksum=" . $checksum;
-			
-			
+            $url = $url . "/UploadSubmissionVLE.aspx?mad=" . $this->assignment->get_instance()->id . "&checksum=" . md5(floor($cs));
             if (!$curl = curl_init($url)) {
                 $this->log('curl init failed [187].');
                 return false;
