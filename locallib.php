@@ -141,8 +141,13 @@ class assign_submission_estream extends assign_submission_plugin
 				
 			}
 			
+			echo 'Success';		
+			
         } catch (Exception $e) {
 			
+		
+           echo 'Error: ' + $e;
+		   
             // Non-fatal exception!
         }
     }
@@ -329,7 +334,7 @@ function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$pa
         $html .= 'document.getElementById("hdn_cdid").value="' . $cdid . '";';
         $html .= 'document.getElementById("hdn_embedcode").value="' . $embedcode . '";';
         $html .= '</script>';
-        $html .= '<iframe src="'.$url.'" width="100%" height="720" noresize frameborder="0"></iframe></div>';
+        $html .= '<iframe src="'.$url.'" width="90%" height="720" noresize frameborder="0"></iframe></div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
         $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode')); 
 	  $mform->addElement('html', $html);

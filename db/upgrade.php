@@ -24,5 +24,32 @@
 function xmldb_assignsubmission_estream_upgrade($oldversion) {
     global $CFG, $DB;
     $dbman = $DB->get_manager();
+	
+	 if ($oldversion < 2020111700) {
+
+        // Changing type of field cdid on table assignsubmission_estream to char.
+        $table = new xmldb_table('assignsubmission_estream');
+        $field = new xmldb_field('cdid', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, '0', 'submission');
+
+        // Launch change of type for field cdid.
+        $dbman->change_field_type($table, $field);
+
+        // Estream savepoint reached.
+        upgrade_plugin_savepoint(true, 2020111700, 'assignsubmission', 'estream');
+    }
+	
+	if ($oldversion < 2020111700) {
+
+        // Changing precision of field embedcode on table assignsubmission_estream to (200).
+        $table = new xmldb_table('assignsubmission_estream');
+        $field = new xmldb_field('embedcode', XMLDB_TYPE_CHAR, '200', null, XMLDB_NOTNULL, null, '0', 'cdid');
+
+        // Launch change of precision for field embedcode.
+        $dbman->change_field_precision($table, $field);
+
+        // Estream savepoint reached.
+        upgrade_plugin_savepoint(true, 2020111700, 'assignsubmission', 'estream');
+    }
+	
     return true;
 }
