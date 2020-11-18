@@ -14,17 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * version information for the Planet eStream Assignment Submission Plugin
- * extends submission plugin base class
+ * db/capabilities stub for the Planet eStream Assignment Submission Plugin
  *
  * @package        assignsubmission_estream
  * @copyright        Planet Enterprises Ltd
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
-defined('MOODLE_INTERNAL') || die();
-$plugin->version = 2020111800;
-$plugin->requires = 2012062500;
-$plugin->component = 'assignsubmission_estream';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '6.5.5';
+$capabilities = array();

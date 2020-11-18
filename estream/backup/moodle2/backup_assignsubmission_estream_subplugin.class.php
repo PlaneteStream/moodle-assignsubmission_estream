@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * version information for the Planet eStream Assignment Submission Plugin
+ * backup class for the Planet eStream Assignment Submission Plugin
  * extends submission plugin base class
  *
  * @package        assignsubmission_estream
@@ -23,8 +23,16 @@
  *
  */
 defined('MOODLE_INTERNAL') || die();
-$plugin->version = 2020111800;
-$plugin->requires = 2012062500;
-$plugin->component = 'assignsubmission_estream';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '6.5.5';
+class backup_assignsubmission_estream_subplugin extends backup_subplugin
+{
+    protected function define_submission_subplugin_structure() {
+            $subplugin = $this->get_subplugin_element();
+            $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
+            $subpluginelement = new backup_nested_element('submission_estream', null, array('cdid', 'embedcode', 'submission'));
+            $subplugin->add_child($subpluginwrapper);
+            $subpluginwrapper->add_child($subpluginelement);
+            $subpluginelement->set_source_table('assignsubmission_estream', array('submission' => backup::VAR_PARENTID));
+            $subpluginelement->annotate_files('assignsubmission_estream', 'submissions_estream', 'submission');
+            return $subplugin;
+    }
+}
