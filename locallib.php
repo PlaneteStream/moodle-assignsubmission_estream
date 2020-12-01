@@ -102,7 +102,7 @@ class assign_submission_estream extends assign_submission_plugin
      */
     public function save(stdClass $submission, stdClass $data) {
 	    try {			
-           // if ($data->cdid > 0) {
+            if ($data->cdid > 0) {
 			  if(empty($data->cdid)) {
 	         global $DB; // beng
                 $thissubmission = $this->funcgetsubmission($submission->id);
@@ -140,7 +140,7 @@ class assign_submission_estream extends assign_submission_plugin
 		  	
 				
 			}
-			
+			}
 			echo 'Success';		
 			
         } catch (Exception $e) {
