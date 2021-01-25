@@ -63,8 +63,8 @@ class assign_submission_estream extends assign_submission_plugin
         if (empty($url)) {
                 $url = rtrim(get_config('planetestream', 'url') , '/');
         }
-        if ($cdid == "0") {
-            return "";
+        if ($cdid == "") {
+            return "<p>Nothing was submitted via the Planet eStream plugin. Please ensure you upload the file in the plugin window before clicking 'Save Changes'.</p>";
         } else {
 			
 			   if(strpos($cdid, '¬') !== false){ // Multiple uploads
@@ -136,10 +136,25 @@ class assign_submission_estream extends assign_submission_plugin
                     $thissubmission->embedcode = $data->embedcode;
                     $thissubmission->cdid = $data->cdid;
                     return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
-                }
-		  	
-				
+                }		  	
 			}
+			} else {
+				 global $DB;				 
+				  $thissubmission = $this->funcgetsubmission($submission->id);
+                if ($thissubmission) {
+                    $thissubmission->submission = $submission->id;
+                    $thissubmission->assignment = $this->assignment->get_instance()->id;
+                    $thissubmission->embedcode = "";
+                    $thissubmission->cdid = "";
+                    return $DB->update_record('assignsubmission_estream', $thissubmission);
+                } else {
+                    $thissubmission = new stdClass();
+                    $thissubmission->submission = $submission->id;
+                    $thissubmission->assignment = $this->assignment->get_instance()->id;
+                    $thissubmission->embedcode = "";
+                    $thissubmission->cdid = "";
+                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
+                }					 
 			}
 			echo 'Success';		
 			
