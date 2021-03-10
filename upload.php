@@ -33,7 +33,12 @@ $params = array();
 if (isset($USER->profile_field_planetestreamusername) && !empty($USER->profile_field_planetestreamusername)) {
     $delta = atto_planetestream_obfuscate($USER->profile_field_planetestreamusername);
 	} else {
-	$delta = atto_planetestream_obfuscate($USER->username);
+		//here
+	if (get_config('assignsubmission_estream', 'usemail') == true) {
+		$delta = atto_planetestream_obfuscate($USER->email);
+	} else {
+		$delta = atto_planetestream_obfuscate($USER->username);
+	}	
 	}
 	$userip = atto_planetestream_obfuscate(getremoteaddr());
 	$baseurl = rtrim(get_config('assignsubmission_estream', 'url') , '/');

@@ -28,3 +28,8 @@ $settings->add(new admin_setting_configtext('assignsubmission_estream/url',
 new lang_string('settingsurl', 'assignsubmission_estream'),
 new lang_string('settingsurl_help', 'assignsubmission_estream'),
 get_config('planetestream', 'url') , PARAM_URL));
+
+$settings->add(new admin_setting_configcheckbox('assignsubmission_estream/usemail',
+new lang_string('settingsusemail', 'assignsubmission_estream'),
+new lang_string('settingsusemail_help', 'assignsubmission_estream'),
+get_config('planetestream', 'usemail') , PARAM_BOOL));
