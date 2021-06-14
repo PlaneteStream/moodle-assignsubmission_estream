@@ -161,7 +161,7 @@ class assign_submission_estream extends assign_submission_plugin
         } catch (Exception $e) {
 			
 		
-           echo 'Error: ' + $e;
+           echo 'Error: ' . $e;
 		   
             // Non-fatal exception!
         }

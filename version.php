@@ -23,8 +23,8 @@
  *
  */
 defined('MOODLE_INTERNAL') || die();
-$plugin->version = 2021031000;
+$plugin->version = 2021061406;
 $plugin->requires = 2012062500;
 $plugin->component = 'assignsubmission_estream';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '6.6.0';
+$plugin->release = '6.6.3';
