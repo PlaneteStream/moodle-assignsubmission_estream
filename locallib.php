@@ -272,6 +272,28 @@ function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$pa
     return $return;
 }
 
+public function remove(stdClass $submission) {
+        global $DB;
+        //delete database record
+        $submissionid = $submission ? $submission->id : 0;
+        if ($submissionid) {
+            $DB->delete_records('assignsubmission_estream', array(
+                'assignment' => $this->assignment->get_instance()->id
+        ));
+
+            //delete recorded files
+            $fs = get_file_storage();
+            $fs->delete_area_files($this->assignment->get_context()->id,
+                    'assignsubmission_planetestream',
+                  //  constants::'onlinepoodll_backimage',
+                    $submission->id);
+        }
+
+
+
+        return true;
+    }
+
 	 
    public function delete_instance() {
         global $DB;
