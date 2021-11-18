@@ -273,25 +273,25 @@ function atto_planetestream_getauthticket($url, $checksum, $delta, $userip, &$pa
 }
 
 public function remove(stdClass $submission) {
-        global $DB;
+      //  global $DB;
         //delete database record
-        $submissionid = $submission ? $submission->id : 0;
-        if ($submissionid) {
-            $DB->delete_records('assignsubmission_estream', array(
-                'assignment' => $this->assignment->get_instance()->id
-        ));
+     //   $submissionid = $submission ? $submission->id : 0;
+      //  if ($submissionid) {
+         //   $DB->delete_records('assignsubmission_estream', array(
+               // 'assignment' => $this->assignment->get_instance()->id
+    //    ));
 
             //delete recorded files
-            $fs = get_file_storage();
-            $fs->delete_area_files($this->assignment->get_context()->id,
-                    'assignsubmission_planetestream',
+           // $fs = get_file_storage();
+           // $fs->delete_area_files($this->assignment->get_context()->id,
+                  //  'assignsubmission_planetestream',
                   //  constants::'onlinepoodll_backimage',
-                    $submission->id);
-        }
+                  //  $submission->id);
+      //  }
 
 
 
-        return true;
+      //  return true;
     }
 
 	 
@@ -367,14 +367,18 @@ public function remove(stdClass $submission) {
                 $url .= '&itemcdid=' . $cdid;
             }
         }
-        $html = '<script type="text/javascript">';
+       $html = '<script type="text/javascript">';
         $html .= 'document.getElementById("hdn_cdid").value="' . $cdid . '";';
         $html .= 'document.getElementById("hdn_embedcode").value="' . $embedcode . '";';
         $html .= '</script>';
-        $html .= '<iframe allow="camera;microphone" src="'.$url.'" width="90%" height="720" noresize frameborder="0"></iframe></div>';
+   
+        $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 900px; height: 800px; line-height: 160%;">';
+     
+        $html .= '<iframe allow="camera;microphone" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
+        $html .= '</div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
-        $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode')); 
-	  $mform->addElement('html', $html);
+        $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode'));
+        $mform->addElement('static', 'div_estream', '', $html);
         $mform->setType('cdid', PARAM_TEXT);
         $mform->setType('embedcode', PARAM_TEXT);
         return true;
