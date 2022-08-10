@@ -64,7 +64,7 @@ class assign_submission_estream extends assign_submission_plugin
                 $url = rtrim(get_config('planetestream', 'url') , '/');
         }
         if ($cdid == "") {
-            return "<p>Nothing was submitted via the Planet eStream plugin. Please ensure you upload the file in the plugin window before clicking 'Save Changes'.</p>";
+            return "<p>" . get_config('assignsubmission_estream', 'emptyoverride') . "</p>";
         } else {
 			
 			   if(strpos($cdid, '¬') !== false){ // Multiple uploads
@@ -373,7 +373,7 @@ public function remove(stdClass $submission) {
         $html .= '</script>';
    
         $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 900px; height: 800px; line-height: 160%;">';
-     
+	 
         $html .= '<iframe allow="camera;microphone" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
         $html .= '</div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));

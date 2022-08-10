@@ -191,7 +191,7 @@ if (empty($itemtitle)) {
 
         </script>
         <div style="text-align: center;">
-                <iframe width="90%" height="700px" allow="camera;microphone" frameborder="0" src="<?php echo $baseurl; ?>/VLE/Moodle/Default.aspx?sourceid=11&inlinemode=moodle&delta=<?php echo $delta?>&checksum=<?php echo $checksum; ?>&assign=<?php echo ((string)$PAGE->pagetype == 'mod-assign-editsubmission' ? "true" : "false"); ?>&assignmoodle=<?php echo ((string)$PAGE->pagetype == 'mod-assign-submission-estream-upload' ? "true" : "false"); ?>&ticket=<?php echo urlencode($authticket); ?>&murl=
+                <iframe width="90%" height="700px" allow="camera;microphone" frameborder="0" src="<?php echo $baseurl; ?>/VLE/Moodle/Default.aspx?sourceid=11&inlinemode=moodle&delta=<?php echo $delta?>&checksum=<?php echo $checksum; ?>&itemcdid=<?php echo $itemcdid; ?>&assign=<?php echo ((string)$PAGE->pagetype == 'mod-assign-editsubmission' ? "true" : "false"); ?>&assignmoodle=<?php echo ((string)$PAGE->pagetype == 'mod-assign-submission-estream-upload' ? "true" : "false"); ?>&ticket=<?php echo urlencode($authticket); ?>&murl=
 				<?php 
                 echo $CFG->wwwroot.'/mod/assign/submission/estream/upload.php'
                 .'&amp;title='.urlencode($itemtitle).'&amp;desc='.urlencode($itemdesc)

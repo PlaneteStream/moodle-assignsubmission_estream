@@ -24,6 +24,7 @@
 $settings->add(new admin_setting_configcheckbox('assignsubmission_estream/default',
 new lang_string('default', 'assignsubmission_estream'),
 new lang_string('default_help', 'assignsubmission_estream') , 1));
+
 $settings->add(new admin_setting_configtext('assignsubmission_estream/url',
 new lang_string('settingsurl', 'assignsubmission_estream'),
 new lang_string('settingsurl_help', 'assignsubmission_estream'),
@@ -33,3 +34,8 @@ $settings->add(new admin_setting_configcheckbox('assignsubmission_estream/usemai
 new lang_string('settingsusemail', 'assignsubmission_estream'),
 new lang_string('settingsusemail_help', 'assignsubmission_estream'),
 get_config('planetestream', 'usemail') , PARAM_BOOL));
+
+$settings->add(new admin_setting_configtext('assignsubmission_estream/emptyoverride',
+new lang_string('emptyoverride', 'assignsubmission_estream'),
+new lang_string('emptyoverride_help', 'assignsubmission_estream'),
+'Nothing was submitted via the Planet eStream plugin. Please ensure you upload the file in the plugin window before clicking Save Changes.' , PARAM_TEXT));

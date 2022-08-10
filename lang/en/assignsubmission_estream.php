@@ -39,3 +39,5 @@ $string['upload_help'] = 'Click the Browse button, select a video or audio file 
 $string['uploadok'] = 'File Upload Complete<br /><br />WARNING: The Submission is NOT yet complete!<br /><br />To finish submission, 
 please click &apos;Save changes&apos; below to save.';
 $string['uploadfailed'] = 'Upload Failed<br /><br />Please refresh the page and try again';
+$string['emptyoverride'] = 'Override "No File Uploaded" Message';
+$string['emptyoverride_help'] = 'Change the message that is displayed when users complete a submission without uploading a file using the activated Planet eStream plugin. Depending on your institutional policies you may want to change this to an Error message rather than feedback.';
