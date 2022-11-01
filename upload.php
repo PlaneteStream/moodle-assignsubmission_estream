@@ -165,9 +165,7 @@ if (empty($itemtitle)) {
         die();
     }
     //$baseurl = rtrim(get_config('assignsubmission_estream', 'url') , '/');
-    if (empty($baseurl)) {
-        $baseurl = rtrim(get_config('planetestream', 'url') , '/');
-    }
+  
     if (empty($baseurl)) {
 ?>
     <html>

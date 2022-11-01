@@ -60,9 +60,6 @@ class assign_submission_estream extends assign_submission_plugin
      */
     public function funcembedplayer($cdid, $embedcode) {
         $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
-        if (empty($url)) {
-                $url = rtrim(get_config('planetestream', 'url') , '/');
-        }
         if ($cdid == "") {
             return "<p>" . get_config('assignsubmission_estream', 'emptyoverride') . "</p>";
         } else {
@@ -101,66 +98,91 @@ class assign_submission_estream extends assign_submission_plugin
      * @return bool
      */
     public function save(stdClass $submission, stdClass $data) {
+		
+		
+		
 	    try {			
-            if ($data->cdid > 0) {
-			  if(empty($data->cdid)) {
-	         global $DB; // beng
-                $thissubmission = $this->funcgetsubmission($submission->id);
-                if ($thissubmission) {
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = "";
-                    $thissubmission->cdid = "";
-                    return $DB->update_record('assignsubmission_estream', $thissubmission);
-                } else {
-                    $thissubmission = new stdClass();
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = "";
-                    $thissubmission->cdid = "";
-                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
-                }	
-            } else {
-				 global $DB;
-                $thissubmission = $this->funcgetsubmission($submission->id);
-                if ($thissubmission) {
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = $data->embedcode;
-                    $thissubmission->cdid = $data->cdid;
-                    return $DB->update_record('assignsubmission_estream', $thissubmission);
-                } else {
-                    $thissubmission = new stdClass();
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = $data->embedcode;
-                    $thissubmission->cdid = $data->cdid;
-                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
-                }		  	
-			}
-			} else {
-				 global $DB;				 
-				  $thissubmission = $this->funcgetsubmission($submission->id);
-                if ($thissubmission) {
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = "";
-                    $thissubmission->cdid = "";
-                    return $DB->update_record('assignsubmission_estream', $thissubmission);
-                } else {
-                    $thissubmission = new stdClass();
-                    $thissubmission->submission = $submission->id;
-                    $thissubmission->assignment = $this->assignment->get_instance()->id;
-                    $thissubmission->embedcode = "";
-                    $thissubmission->cdid = "";
-                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
-                }					 
-			}
-			echo 'Success';		
+		
+			 global $DB;
+			 $thissubmission = $this->funcgetsubmission($submission->id);
+			 
+			  if(empty($thissubmission->id)) { // New submission
+				  
+				 if (empty($data->cdid)) { // Not adding vid
 			
+					if (get_config('assignsubmission_estream', 'forcesubmit') == true) {
+				
+					// Do nothing, user is forced to submit something
+					echo 'new, nothing, force';
+					
+					return '';
+				
+					} else {
+						
+						echo 'new, nothing, no force';
+				
+						    $thissubmission = new stdClass();
+							$thissubmission->submission = $submission->id;
+							$thissubmission->assignment = $this->assignment->get_instance()->id;
+							$thissubmission->embedcode = "";
+							$thissubmission->cdid = "";
+							return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;
+				
+					}
+			
+				} else { // New sub, add video(s)
+							 
+				  echo 'new, video';
+							 
+					 $thissubmission = new stdClass();
+                    $thissubmission->submission = $submission->id;
+                    $thissubmission->assignment = $this->assignment->get_instance()->id;
+                    $thissubmission->embedcode = $data->embedcode;
+                    $thissubmission->cdid = $data->cdid;
+                    return $DB->insert_record('assignsubmission_estream', $thissubmission) > 0;		 
+					
+				}
+				  
+			} else { // Existing submission
+				  
+				if($data->cdid == $thissubmission->cdid) { // Overwriting with nothing
+			        
+					if (get_config('assignsubmission_estream', 'forcesubmit') == true) {
+				
+					// Do nothing, user is forced to submit something
+					
+					echo 'exist, nothing, force';
+					
+					return '';
+				
+					} else {
+						
+						echo 'exist, nothing, no force';
+						
+						$thissubmission->submission = $submission->id;
+						$thissubmission->assignment = $this->assignment->get_instance()->id;
+						$thissubmission->embedcode = "";
+						$thissubmission->cdid = "";
+						return $DB->update_record('assignsubmission_estream', $thissubmission);
+						
+					}
+											
+				} else { 
+				
+				echo 'exist, video';
+				
+                     $thissubmission->submission = $submission->id;
+                    $thissubmission->assignment = $this->assignment->get_instance()->id;
+                    $thissubmission->embedcode = $data->embedcode;
+                    $thissubmission->cdid = $data->cdid;
+                    return $DB->update_record('assignsubmission_estream', $thissubmission);		
+					
+				}
+				  
+		 }
+		
         } catch (Exception $e) {
 			
-		
            echo 'Error: ' . $e;
 		   
             // Non-fatal exception!
@@ -303,10 +325,7 @@ public function remove(stdClass $submission) {
         try {
             $cs = ( float )(date('d') + date('m')) + (date('m') * date('d')) + (date('Y') * date('d'));
             $cs += $cs * (date('d') * 2.27409) * .689274;
-            $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');
-            if (empty($url)) {
-                $url = rtrim(get_config('planetestream', 'url') , '/');
-            }
+            $url = rtrim(get_config('assignsubmission_estream', 'url') , '/');       
             $url = $url . "/UploadSubmissionVLE.aspx?mad=" . $this->assignment->get_instance()->id . "&checksum=" . md5(floor($cs));
             if (!$curl = curl_init($url)) {
                 $this->log('curl init failed [187].');
