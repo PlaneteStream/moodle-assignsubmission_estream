@@ -38,6 +38,11 @@ new lang_string('emptyoverride', 'assignsubmission_estream'),
 new lang_string('emptyoverride_help', 'assignsubmission_estream'),
 'Nothing was submitted via the Planet eStream plugin. Please ensure you upload the file in the plugin window before clicking Save Changes.' , PARAM_TEXT));
 
+$settings->add(new admin_setting_configtext('assignsubmission_estream/helptext',
+new lang_string('helptext', 'assignsubmission_estream'),
+new lang_string('helptext_help', 'assignsubmission_estream'),
+'' , PARAM_TEXT));
+
 $settings->add(new admin_setting_configcheckbox('assignsubmission_estream/forcesubmit',
 new lang_string('forcesubmit', 'assignsubmission_estream'),
 new lang_string('forcesubmit_help', 'assignsubmission_estream'), PARAM_BOOL));;

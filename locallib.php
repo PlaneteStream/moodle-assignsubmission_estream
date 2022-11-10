@@ -392,7 +392,7 @@ public function remove(stdClass $submission) {
         $html .= '</script>';
    
         $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 900px; height: 800px; line-height: 160%;">';
-	 
+	     $html .= '<p>' . get_config('assignsubmission_estream', 'helptext') . '</p>';
         $html .= '<iframe allow="camera;microphone" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
         $html .= '</div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
