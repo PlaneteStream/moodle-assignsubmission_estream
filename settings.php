@@ -46,3 +46,7 @@ new lang_string('helptext_help', 'assignsubmission_estream'),
 $settings->add(new admin_setting_configcheckbox('assignsubmission_estream/forcesubmit',
 new lang_string('forcesubmit', 'assignsubmission_estream'),
 new lang_string('forcesubmit_help', 'assignsubmission_estream'), PARAM_BOOL));;
+
+$settings->add(new admin_setting_configcheckbox('assignsubmission_estream/overwriteblank',
+new lang_string('overwriteblank', 'assignsubmission_estream'),
+new lang_string('overwriteblank_help', 'assignsubmission_estream'), PARAM_BOOL));;

@@ -105,7 +105,7 @@ class assign_submission_estream extends assign_submission_plugin
 		
 			 global $DB;
 			 $thissubmission = $this->funcgetsubmission($submission->id);
-			 
+			 			 			 
 			  if(empty($thissubmission->id)) { // New submission
 				  
 				 if (empty($data->cdid)) { // Not adding vid
@@ -115,7 +115,8 @@ class assign_submission_estream extends assign_submission_plugin
 					// Do nothing, user is forced to submit something
 					echo 'new, nothing, force';
 					
-					return '';
+						$this->set_error(get_string('error_force', 'assignsubmission_estream', $this->get_error()));
+					return false;
 				
 					} else {
 						
@@ -153,18 +154,28 @@ class assign_submission_estream extends assign_submission_plugin
 					
 					echo 'exist, nothing, force';
 					
-					return '';
+					$this->set_error(get_string('error_force', 'assignsubmission_estream', $this->get_error()));
+					return false;
 				
 					} else {
 						
 						echo 'exist, nothing, no force';
 						
+						if (get_config('assignsubmission_estream', 'overwriteblank') == true) {
+														
 						$thissubmission->submission = $submission->id;
 						$thissubmission->assignment = $this->assignment->get_instance()->id;
 						$thissubmission->embedcode = "";
 						$thissubmission->cdid = "";
 						return $DB->update_record('assignsubmission_estream', $thissubmission);
+							
+						} else {
+							
+					
+						return true;						
 						
+						} 
+																	
 					}
 											
 				} else { 
