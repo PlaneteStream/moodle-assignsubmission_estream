@@ -376,8 +376,8 @@ public function remove(stdClass $submission) {
         $embedcode = "";
         $url = $CFG->httpswwwroot . '/mod/assign/submission/estream/upload.php';
         $itemtitle = "Submission by " . fullname($USER);
-        if (strlen($itemtitle > 120)) {
-            $itemtitle = substr($itemtitle, 120);
+        if (strlen($itemtitle) > 120) {
+            $itemtitle = substr($itemtitle, 0, 120);
         }
         $itemdesc = "Assignment : " . $this->assignment->get_instance()->name . "\r\n";
         $itemdesc .= "Course : " . $COURSE->fullname . "\r\n";
