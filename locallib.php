@@ -171,6 +171,7 @@ class assign_submission_estream extends assign_submission_plugin
 							
 						} else {
 							
+							
 					
 						return true;						
 						
@@ -376,7 +377,7 @@ public function remove(stdClass $submission) {
         $embedcode = "";
         $url = $CFG->httpswwwroot . '/mod/assign/submission/estream/upload.php';
         $itemtitle = "Submission by " . fullname($USER);
-        if (strlen($itemtitle) > 120) {
+       if (strlen($itemtitle) > 120) {
             $itemtitle = substr($itemtitle, 0, 120);
         }
         $itemdesc = "Assignment : " . $this->assignment->get_instance()->name . "\r\n";
@@ -405,7 +406,7 @@ public function remove(stdClass $submission) {
         $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 900px; height: 800px; line-height: 160%;">';
 	    $html .= get_config('assignsubmission_estream', 'helptext') . '<br />';
 		 $html .= get_string('upload_help', 'assignsubmission_estream') . '<br />';
-        $html .= '<iframe allow="camera;microphone" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
+        $html .= '<iframe allow="camera;microphone;screen;" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
         $html .= '</div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
         $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode'));
