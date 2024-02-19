@@ -234,23 +234,7 @@ class assign_submission_estream extends assign_submission_plugin
     public function can_upgrade($type, $version) {
         return false;
     }
-    /**
-     * Return submission log entry
-     *
-     * @param stdClass $submission The new submission
-     * @return string
-     */
-   // public function format_for_log(stdClass $submission) {
-       // return get_string('pluginname', 'assignsubmission_estream') . " added submission #" . $submission->id;
-    //}
-	public function format_for_log() {
-        return get_string('pluginname', 'assignsubmission_estream') . " added submission ";
-    }
-    /**
-     * The assignment has been deleted - cleanup
-     *
-     * @return bool
-     */
+  
 	 
 	public function atto_planetestream_obfuscate($strx) {
     $strbase64chars = '0123456789aAbBcCDdEeFfgGHhiIJjKklLmMNnoOpPQqRrsSTtuUvVwWXxyYZz/+=';
