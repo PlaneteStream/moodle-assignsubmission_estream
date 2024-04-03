@@ -74,7 +74,7 @@ public static function get_metadata(collection $collection): collection {
         }
         $context = $exportdata->get_context();
         $currentpath = $exportdata->get_subcontext();
-        $currentpath[] = get_string('privacy:path', 'assignsubmission_estream');
+        //$currentpath[] = get_string('privacy:path', 'assignsubmission_estream');
         $submission = $exportdata->get_pluginobject();
         $pessubmission = $DB->get_record('assignsubmission_estream', array('submission' => $submission->id));
         if (!empty($pessubmission)) {
