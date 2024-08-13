@@ -188,7 +188,10 @@ if (empty($itemtitle)) {
                 // parent.parent.document.getElementById("id_submitbutton").disabled = true;
 
         </script>
-        <div style="text-align: center;">
+       <!-- <div style="text-align: center;">
+                <iframe width="90%" height="700px"  allow="camera;microphone;display-capture;" frameborder="0" src="https://labs.planetestream.com/Embed.aspx?id=519&amp;code=fQ~xKpfoMIyMGtlr7uQUaWR9L7wLslZ&min=1"></iframe>
+        </div>-->
+		<div style="text-align: center;">
                 <iframe width="90%" height="700px" allow="camera;microphone;display-capture;" frameborder="0" src="<?php echo $baseurl; ?>/VLE/Moodle/Default.aspx?sourceid=11&inlinemode=moodle&delta=<?php echo $delta?>&checksum=<?php echo $checksum; ?>&itemcdid=<?php echo $itemcdid; ?>&assign=<?php echo ((string)$PAGE->pagetype == 'mod-assign-editsubmission' ? "true" : "false"); ?>&assignmoodle=<?php echo ((string)$PAGE->pagetype == 'mod-assign-submission-estream-upload' ? "true" : "false"); ?>&ticket=<?php echo urlencode($authticket); ?>&murl=
 				<?php 
                 echo $CFG->wwwroot.'/mod/assign/submission/estream/upload.php'
