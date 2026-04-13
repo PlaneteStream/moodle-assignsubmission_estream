@@ -64,10 +64,10 @@ class assign_submission_estream extends assign_submission_plugin
             return "<p>" . get_config('assignsubmission_estream', 'emptyoverride') . "</p>";
         } else {
 			
-			   if(strpos($cdid, '¬') !== false){ // Multiple uploads
+			   if(strpos($cdid, 'Â¬') !== false){ // Multiple uploads
 			   
-	$CDIDs = explode("¬", $cdid);
-				 $Codes = explode("¬", $embedcode);	
+	$CDIDs = explode("Â¬", $cdid);
+				 $Codes = explode("Â¬", $embedcode);	
 				 $strReturn = '';
 
 				  for($i = 0;$i<count($CDIDs);$i++){
@@ -385,15 +385,15 @@ public function remove(stdClass $submission) {
                 $url .= '&itemcdid=' . $cdid;
             }
         }
-       $html = '<script type="text/javascript">';
+        $html = '<script type="text/javascript">';
         $html .= 'document.getElementById("hdn_cdid").value="' . $cdid . '";';
         $html .= 'document.getElementById("hdn_embedcode").value="' . $embedcode . '";';
         $html .= '</script>';
    
         $html .= '<div style="padding-left: 15px; padding-top: 8px; width: 900px; height: 800px; line-height: 160%;">';
 	    $html .= get_config('assignsubmission_estream', 'helptext') . '<br />';
-		 $html .= get_string('upload_help', 'assignsubmission_estream') . '<br />';
-        $html .= '<iframe allow="camera;microphone;display-capture;" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
+		$html .= get_string('upload_help', 'assignsubmission_estream') . '<br />';
+        $html .= '<iframe allow="camera; microphone; display-capture; local-network-access *" src="'.$url.'" width="90%" height="775px" noresize frameborder="0"></iframe>';
         $html .= '</div>';
         $mform->addElement('hidden', 'cdid', '', array('id' => 'hdn_cdid'));
         $mform->addElement('hidden', 'embedcode', '', array('id' => 'hdn_embedcode'));
