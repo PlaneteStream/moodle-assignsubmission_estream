@@ -281,7 +281,7 @@ $strEmbedCodeJSON = json_encode(
 
 <body<?php echo $boolSuccess ? ' onload="page_load()"' : ''; ?>>
 
-    <h3 id="div_Status"><?php echo s($strMessage); ?></h3>
+    <h3 id="div_Status"><?php echo $boolSuccess ? $strMessage : s($strMessage); ?></h3>
 
 </body>
 </html>
